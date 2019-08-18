@@ -1,0 +1,73 @@
+%%%% packages.tex by Stefano Gogioso 
+%%%% Version 7 Dec 2016
+
+\usepackage[toc,page]{appendix}
+%% MATHS %%
+\usepackage{mathtools} % Loads and extends amsmath
+\usepackage{amssymb} % Extra mathematical symbols (loads amsfonts)
+\usepackage{amsthm} % Theorem environments
+\usepackage{stmaryrd} % Some maths symbols for logic and computer science
+%\usepackage{cjhebrew} % Jewish symbols
+%\usepackage[nodisplayskipstretch]{setspace} % Redefines spacing before/after equations
+
+%% WRITING %%
+\usepackage{relsize} % Additional relative sizes for fonts
+\usepackage{microtype} % Improves appearance of writing
+%\usepackage{fullpage} % Reduces lateral page margins for vanilla classes
+\usepackage{multicol} % Multi-column environments
+\usepackage{csquotes} % Environments for quotes
+\usepackage{xspace}
+%% CITATIONS %%
+%\usepackage{hyperref} % Hyperlink citations, comment out for arxiv submission 
+\usepackage[nocompress]{cite} % Comment out if using natbib or apacite
+\usepackage[hyperpageref]{backref} 
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+	\ifcase #1 (Not cited.)%
+	\or        (Cited on page~#2.)%
+	\else      (Cited on pages~#2.)%
+	\fi}
+% QPL wants Bibtex!
+%\usepackage[
+%backend=biber,
+%natbib=true,
+%language=auto,
+%style=numeric-comp,
+%sorting=nyt,
+%maxbibnames=10,
+%firstinits=true,
+%url=true, 
+%doi=false,
+%isbn=false,
+%eprint=false
+%]{biblatex}
+
+%\usepackage[sort&compress]{natbib} % Comment out if using cite or apacite
+%\usepackage[round,authoryear,sort&compress]{natbib} % Comment out if using cite or apacite
+%\usepackage{apacite} % Comment out if using natbib or cite
+
+%% GRAPHICS %%
+\usepackage{graphicx} % Import of graphics
+\usepackage{subcaption} % Captioning and referencing sub-figures
+\usepackage{wrapfig} % Figures wrapped in text
+\usepackage[usenames,dvipsnames]{xcolor} % Introduces colour names
+\usepackage{tikz} % TikZ
+\usetikzlibrary{
+	math,
+	decorations.markings,
+	positioning,
+  arrows,
+  intersections,
+%	arrows.meta,
+  shapes,
+  shapes.misc,
+	automata,
+	petri,
+	decorations,
+	backgrounds,
+	calc,
+	fit,
+	quotes
+  }
+
+  \usepackage{circuitikz}
