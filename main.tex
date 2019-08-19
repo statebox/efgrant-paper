@@ -18,14 +18,14 @@
 
 \setcounter{tocdepth}{2}
 
-\title{Mapping Automata to zk-SNARKS \\ Using Category Theory}
+\title{Mapping finite state machines to zk-SNARKS \\ Using Category Theory}
 \author{
 	F. Genovese, A.Knispel, J. Fitzgerald \\
 	Statebox Team\\
 	\texttt{research@statebox.io}
 }
 
-\def\titlerunning{Mapping Automata to zk-SNARKS}
+\def\titlerunning{Mapping finite state machines to zk-SNARKS}
 \def\authorrunning{F. Genovese, A.Knispel \& J. Fitzgerald}
 
 
@@ -35,7 +35,7 @@
 %
 \begin{abstract}
   We provide a categorical procedure to turn graphs corresponding to 
-  automata state spaces into boolean circuits, leveraging on the fact that 
+  state spaces of finite state machines into boolean circuits, leveraging on the fact that 
   boolean circuits can be easily turned into zk-SNARKS. Our 
   circuits verify that a given sequence of edges and nodes is indeed a 
   path in the graph they represent. We then generalize to circuits verifying 
@@ -52,21 +52,21 @@ Lately, especially due to the advent of smart contracts
 in business applications, there has been a renewed interest towards 
 classical results in theoretical computer science.
 
-Smart contracts, especially if hosted on blockchain~[], are immutable
+Smart contracts, especially if hosted on the blockchain~[], are immutable
 pieces of code, more often than not used to manage money. These are 
 very good reasons to look into ways of writing smart contracts  
 that are reliable, easy to analyze and correct-by-construction. These requirements
  renewed interest in formal models of computation~[]: In particular, 
- automata~[] are considered easy to implement, very structured, 
- and make possible to prove roperties of the computations 
- being performed. 
+ \emph{finite state machines (FSMs)}~[] are considered easy 
+ to implement, well structured, and make possible to prove 
+ roperties of the computations being performed. 
 
 On the other hand, blockchain also spawned a renewed interest for 
 cyptography, both for security, privacy, and space reasons: It is 
 paramount for blockchains to be cryptographically secure, if they are 
 meant to work as exchanges of valuables of any sort (such as digital currency).
 As for privacy, criptographic tools such as \emph{zero-knowledge 
-succinct non-interactive argument of knowledge} (zk-SNARKS)~[] allow for 
+succinct non-interactive argument of knowledge (zk-SNARKS)}~[] allow for 
 the verification that an information is correct without actually revealing nothing 
 about the information itself. This has been used, for instance, by ZCash~[] to 
 implement private blockchain transactions: Here, transacting parties submit 
@@ -79,15 +79,15 @@ grow indefinitely space-wise as new blocks keep being added to the chain.
 This is a serious issue, since new nodes are either forced to download many 
 gigabytes of data to sync with the network or they have to require the current state 
 of the chain from another node (which requires trusting the node) and then start 
-syncing from there. This ``trust Vs. feasibility'' issue can be resolved by recursive 
-zk-SNARKS~[], in which snarks are used to verify, using a few Kbs, that the current 
+syncing from there. This ``trust Vs. feasibility'' issue can be resolved by \emph{recursive 
+zk-SNARKS}~[], in which are used to verify, using just a few Kbs, that the current 
 state received by a node is valid. Such applications look very promising especially in 
 contexts such as blockchain applied to the Internet of Things~[].
 
 In this work, we put together formal models of computation and 
-cryptography, providing a categorical way to turn automata into zk-SNARKs 
+cryptography, providing a categorical way to turn finite state machines into zk-SNARKs 
 that verify how a sequence of inputs leading to a state change follows the 
-rules specified by the automaton itself. To do this, we bypass the problem 
+rules specified by the finite state machine itself. To do this, we bypass the problem 
 of modelling cryptographical primitives categorically, using the 
 fact that boolean circuits can be easily turned into zk-SNARKS by already 
 available techniques. 
@@ -95,14 +95,14 @@ available techniques.
 We proceed as follows: In Section~\ref{sec: the categories bfun, bcirc, bkp} we 
 define boolean circuits from a categorical perspective. 
 In Section~\ref{sec: finite state machines} we briefly 
-explain the links between automata and free categories. 
+explain the links between finite state machines and free categories. 
 In Section~\ref{sec: turning executions into circuits} 
 we show how to turn a given sequence of state changes 
-for a given automaton into a boolean circuit. We then obtain a 
+for a given finite state machine into a boolean circuit. We then obtain a 
 generalized boolean circuit which verifies arbitrary sequences up to 
 a given length, and show how it can be turned into a zk-SNARK. 
 In Section~\ref{sec: abstracting over graphs} we generalize to 
-circuits which accept the specification defining an automaton 
+circuits which accept the specification defining a finite state machine 
 as input, thus attaining full privacy. In Section~\ref{sec: conclusion} 
 we conclude by defining directions of future work.
 
@@ -415,7 +415,7 @@ work, so we opted for the easiest solution.
 %
 %
 \section{Finite State Machines (FSMs)}\label{sec: finite state machines}
-We see \emph{state machines} as Petri nets where 
+We see \emph{state machines} as Petri nets~[] where 
 each transition has only one inbound and one outbound arc, 
 and all markings have exactly one token. In this setting, while 
 the usual underlying structure of a Petri net is an hypegraph,
@@ -673,7 +673,7 @@ will return $1$ if the vertex is the source of the edge, $0$ otherwise,
 along with the enumeration of the edge's target.
 Importantly, it will always return $0$ on the first output for 
 any undefined enumeration in input. It is, moreover, a morphism 
-in $\Bkp$, as it becomes evident by drawing it:
+in $\Bkp$, as becomes evident by drawing it:
 %
 %
 \begin{equation*}
@@ -709,7 +709,7 @@ in $\Bkp$, as it becomes evident by drawing it:
   Having chosen an enumeration on the vertexes and edges of a graph $G$, there 
   is a pseudofunctor $\Free{G} \to \Bkp$, sending 
   each object to $X^V$, and each generating morphism $e$ of $\Free{G}$ to the 
-  following morphism, called \emph{$e$-evaluator}, where $e$ represents the 
+  following morphism, where $e$ represents the 
   constant gate outputting the enumeration of $e$ when considered as an edge of $G$:
   %
   %
@@ -760,7 +760,7 @@ an intermediate step:
 %
 \begin{lemma}\label{lem: functor to count}
   Consider the category $\Count$, which has one object $*$ and 
-  natural numbers as morphisms, with $0$ is the identity morphism 
+  natural numbers as morphisms, with $0$ as the identity morphism 
   and composition as addition. 
 
   For each graph $G$, there is a functor $\Free{G} \to \Count$ sending 
@@ -909,7 +909,7 @@ to an already implemented and audited solution.
 %
 Notice how a snarkized circuit just outputs a bit, and is 
 thus a boolean circuit. Note moreover how the function 
-$\Snark{\_}$ cannot be made improved to a 
+$\Snark{\_}$ cannot be improved to a 
 (pseudo)functor, since boolean circuits themselves 
 do not form a category.
 
@@ -919,8 +919,9 @@ along with $f_1, \dots, f_n$ inputs of type $X^E$, representing
 edges, and returns $1$ if and only if the edge inputs define a valid path 
 from $a$ to $b$ according to the graph specification defined by $S_G$ and $T_G$.
 The corresponding zk-SNARK, obtained by simply feeding our circuit to 
-any already available library such as \texttt{libsnark}~[], is a succint 
-zero knowledge proof that any specified path in the graph is valid or not.
+any already available library such as \texttt{libsnark}~[], is a succint,
+non-interactive zero knowledge proof that any specified 
+path in the graph is valid or not.
 %
 %
 %
@@ -934,8 +935,8 @@ information has to be necessarily made public~[], this may cause
 problems. Indeed, it may be possible to reverse-engineer this 
 public information to obtain information about $G$. Albeit 
 this would still allow to keep used paths secret, the topology 
-of the state space of an automaton can reveal a lot about 
-what the automaton is used for. We would like to keep this 
+of the state space of a finite state machine can reveal a lot about 
+what the finite state machine is used for. We would like to keep this 
 information private.
 
 To do this, we notice that as $S_G$ and $T_G$ are obtained by building 
@@ -966,16 +967,17 @@ and $T_{m,n}$ in place of $S_G$ and $T_G$ in
 Theorems~\ref{thm: path functor} and~\ref{thm: graph functor}
 won't work: Indeed, it would force us to specify the encoding
 for $G$ $n$ times in a $n$-fold composition. Moreover, what happens 
-if we given different graphs specifications in the composition?
+if we give different graphs specifications in the composition?
 
-The point is that notice that the categorical structure 
+The point is that the categorical structure 
 of $\Bkp$ is not good to manage inputs that have to be 
 routinely repeated. We fix these problems straight away 
 by defining a new category as follows:
 %
 %
 \begin{definition}\label{def: definition of bzkp}
-  Fix a natural number $k$. We denote with $\Bzkp{k}$ the \emph{bicategory of zero knowledge proof circuits of size $k$} defined 
+  Fix a natural number $k$. We denote with $\Bzkp{k}$ 
+  the \emph{bicategory of zero knowledge proof circuits of size $k$} defined 
   as follows:
   %
   %
@@ -1173,8 +1175,11 @@ constructions we built behave well with respect to each other.
 %
 %
 \begin{theorem}\label{thm: the cube}
-Let $G$, $G'$ be graphs with $n, n'$ vertices and $m, m'$ edges, respectively. 
-Then for each morphism $G \to G'$ and each path $p$ of $G$ the following diagram commutes:
+Let $G$, $G'$ be graphs with $n, n'$ vertices and $m, m'$ 
+edges, respectively. Denote with $f(n,m)$ the function 
+outputting how many bits are needed to store the source 
+and target truth tables for graphs with $n$ vertexes and $m$ edges. 
+Then for each morphism $G \to G'$ the following diagram commutes:
 %
 \begin{equation*}
   \begin{tikzpicture}
@@ -1191,12 +1196,12 @@ Then for each morphism $G \to G'$ and each path $p$ of $G$ the following diagram
     \node(Bpath) at (8,2.25) {$\Bpath{G}$};
     \node(Count') at (4.5,1.5) {$\Count$};
     \node(Count) at (4.5,3.75) {$\Count$};
-    \node(Bzkp') at (6,3) {$\Bzkp{m',n'}$};
-    \node(Bzkp) at (6,5.25) {$\Bzkp{m,n}$};
+    \node(Bzkp') at (6,3) {$\Bzkp{f(m',n')}$};
+    \node(Bzkp) at (6,5.25) {$\Bzkp{f(m,n)}$};
     \node(Bgraph') at (9.5,1.5) {$\Bgraph{G'}$};
     \node(Bgraph) at (9.5,3.75) {$\Bgraph{G}$};
-    \node(Bzkp1') at (11,3) {$\Bzkp{m',n'}$};
-    \node(Bzkp1) at (11,5.25) {$\Bzkp{m,n}$};
+    \node(Bzkp1') at (11,3) {$\Bzkp{f(m',n')}$};
+    \node(Bzkp1) at (11,5.25) {$\Bzkp{f(m,n)}$};
     % Top
       \draw[->] (G) -- (FG);
       \draw[->] (FG) -- (Count);

@@ -35,7 +35,7 @@
 
   Naturality and satisfaction of pentagon and triangle identities for 
   associators and unitors, respectively, follows from the 
-  fact that the 2-cell structure of $\Bkp$ is posetal, so proving 
+  fact that the 2-cell structure of $\Bkp$ is a preorder, so proving 
   that such morphisms exist is enough.
 \end{proof}
 %
@@ -112,6 +112,33 @@
 \endgroup
 \begin{proof}
   Functoriality is obvious from the freeness of $\Free{G}$.
+  Moreover, observe how any morphism of graphs induces a functor between 
+  their corresponding free categories which sends generating morphisms 
+  to generating morphisms. In particular, this means that such 
+  functor preserves the length of paths, making the following diagram 
+  trivially commute:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (G') at (-2,0) {$G'$}; 
+      \node (G) at (-2,2) {$G$};
+      \node (FG') at (0,0) {$\Free{G'}$}; 
+      \node (FG) at (0,2) {$\Free{G}$};
+      \node (Count') at (2,0) {$\Count$};
+      \node (Count) at (2,2) {$\Count$};
+      \draw[->] (G) -- node[left] {$f$} (G');
+      \draw[->] (G) -- (FG);
+      \draw[->] (G') -- (FG');
+      \draw[->] (FG) -- node[left] {$\Free{f}$} (FG');
+      \draw[->] (FG) -- (Count);
+      \draw[->] (FG') -- (Count');
+      \draw[transform canvas={xshift=-1pt}, -] (Count) -- (Count');
+      \draw[transform canvas={xshift=1pt}, -] (Count) -- (Count');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  This suffices to prove the existence of a functorial correspondence $\Graph \to [\Count, \Count]$.
 \end{proof}
 %
 %
@@ -201,8 +228,11 @@
 \begingroup
 \def\thetheoremUnified{\ref{thm: the cube}}
 \begin{theorem}
-  Let $G$, $G'$ be graphs with $n, n'$ vertices and $m, m'$ edges, respectively. 
-  Then for each morphism $G \to G'$ and each path $p$ of $G$ the following diagram commutes:
+  Let $G$, $G'$ be graphs with $n, n'$ vertices and $m, m'$ 
+  edges, respectively. Denote with $f(n,m)$ the function 
+  outputting how many bits are needed to store the source 
+  and target truth tables for graphs with $n$ vertexes and $m$ edges. 
+  Then for each morphism $G \to G'$ the following diagram commutes:
   %
 \begin{equation*}
   \begin{tikzpicture}
@@ -219,12 +249,12 @@
     \node(Bpath) at (8,2.25) {$\Bpath{G}$};
     \node(Count') at (4.5,1.5) {$\Count$};
     \node(Count) at (4.5,3.75) {$\Count$};
-    \node(Bzkp') at (6,3) {$\Bzkp{m',n'}$};
-    \node(Bzkp) at (6,5.25) {$\Bzkp{m,n}$};
+    \node(Bzkp') at (6,3) {$\Bzkp{f(m',n')}$};
+    \node(Bzkp) at (6,5.25) {$\Bzkp{f(m,n)}$};
     \node(Bgraph') at (9.5,1.5) {$\Bgraph{G'}$};
     \node(Bgraph) at (9.5,3.75) {$\Bgraph{G}$};
-    \node(Bzkp1') at (11,3) {$\Bzkp{m',n'}$};
-    \node(Bzkp1) at (11,5.25) {$\Bzkp{m,n}$};
+    \node(Bzkp1') at (11,3) {$\Bzkp{f(m',n')}$};
+    \node(Bzkp1) at (11,5.25) {$\Bzkp{f(m,n)}$};
     % Top
       \draw[->] (G) -- (FG);
       \draw[->] (FG) -- (Count);
@@ -281,5 +311,253 @@
 \addtocounter{theoremUnified}{-1}
 \endgroup
 \begin{proof}
-  TODO
-\end{proof}
+  We will prove the commutativity of single squares, 
+  starting from the top face. In the square:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (FG) at (0,0) {$\Free{G}$}; 
+      \node (Count) at (0,2) {$\Count$};
+      \node (BpathG) at (2,0) {$\Bpath{G}$}; 
+      \node (BgraphG) at (2,2) {$\Bgraph{G}$};
+      \draw[->] (FG) -- (Count);
+      \draw[->] (Count) -- (BgraphG);
+      \draw[->] (FG) -- (BpathG);
+      \draw[->] (BpathG) -- (BgraphG);
+    \end{tikzpicture}
+  \end{equation*}
+  % 
+  We notice that the bottom functor acts by sending 
+  each edge $e$ to the morphism:
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor e);(\Id{X^n} \Tensor \COPYSym_{X^m});
+    (\Id{X^n} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  Being a subcategory of $\Bcirc$, which is free symmetric monoidal,
+  eavery morphism in $\Bpath{G}$ is just a composition of a finite 
+  number of morphisms as the one above for some edges $e_1, \dots, e_n$.
+  We then define a pseudofunctor sending each morphism 
+    %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor e);(\Id{X^n} \Tensor \COPYSym_{X^m});
+    (\Id{X^n} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  To:
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor \COPYSym_{X^m});
+    (\Id{X^n} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  The mapping on 2-cells is trivial. Pseudofunctoriality 
+  is obvious and follows from function extensionality
+  being a congruence wrt function composition. Commutativity 
+  is obvious too since the morphism above is precisely where
+  precisely where each generating morphism in $\Free{G}$ gets sent to
+  when going through $\Count$.
+
+  The square:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (Count) at (0,0) {$\Count$};
+      \node (BgraphG) at (2,0) {$\Bgraph{G}$};
+      \node (BpathG) at (2,2) {$\Bzkp{f(n,m)}$}; 
+      \node (FG) at (0,2) {$\Bzkp{f(n,m)}$}; 
+
+      \draw[<-] (FG) -- (Count);
+      \draw[->] (Count) -- (BgraphG);
+      \draw[transform canvas={yshift=-1pt}, =] (FG) -- (BpathG);
+      \draw[transform canvas={yshift=1pt}, =] (FG) -- (BpathG);
+      \draw[<-] (BpathG) -- (BgraphG);
+    \end{tikzpicture}
+  \end{equation*}
+  % 
+  Commutes by noticing that $\Bgraph{G}$ is again generated by the morphism 
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor \COPYSym_{X^m});
+    (\Id{X^n} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+   We can then define the right-edge pseudofunctor to be sending it to:
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor \COPYSym_{X^{f(n,m)}} \Tensor \COPYSym_{X^m});
+    (\Id{X^n \Tensor X^{f(n,m)}} \Tensor \sigma_{X^{f(n,m)},X^m} \Tensor \Id{X^m});
+    (\Id{X^n} \Tensor S_{n,m} \Tensor T_{n,m});(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  %
+  The mapping on 2-cells is again trivial. 
+  Pseudofunctoriality  and square commutativity 
+  follow as in the previous case.
+
+  The bottom face is equal to the top one, so we now switch to 
+  the side faces. Consider a graph morphism $g:G \to G'$.
+  Commutativity of 
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (G') at (-2,0) {$G'$}; 
+      \node (G) at (-2,2) {$G$};
+      \node (FG') at (0,0) {$\Free{G'}$}; 
+      \node (FG) at (0,2) {$\Free{G}$};
+      \node (Count') at (2,0) {$\Count$};
+      \node (Count) at (2,2) {$\Count$};
+      \draw[->] (G) -- node[left] {$g$} (G');
+      \draw[->] (G) -- (FG);
+      \draw[->] (G') -- (FG');
+      \draw[->] (FG) -- node[left] {$\Free{g}$} (FG');
+      \draw[->] (FG) -- (Count);
+      \draw[->] (FG') -- (Count');
+      \draw[transform canvas={xshift=-1pt}, -] (Count) -- (Count');
+      \draw[transform canvas={xshift=1pt}, -] (Count) -- (Count');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  Is just Lemma~\ref{lem: functor to count}. As for the square:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (Count) at (0,2) {$\Count$};
+      \node (Count') at (0,0) {$\Count$};
+      \node (Bzkp) at (2,2) {$\Bzkp{f(n,m)}$}; 
+      \node (Bzkp') at (2,0) {$\Bzkp{f(n',m')}$}; 
+      \draw[->] (Count) -- (Bzkp);
+      \draw[->] (Count') -- (Bzkp');
+      \draw[->] (Bzkp) -- (Bzkp');
+      \draw[transform canvas={xshift=-1pt}, -] (Count) -- (Count');
+      \draw[transform canvas={xshift=1pt}, -] (Count) -- (Count');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  It is sufficient to define the pseudofunctor 
+  $\Bzkp{f(n,m)} \to \Bzkp{f(n', m')}$ as sending 
+  $X^n$ to $X^{n'}$, and the generating morphism
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor \COPYSym_{X^{f(n,m)}} \Tensor \COPYSym_{X^m});
+    (\Id{X^n \Tensor X^{f(n,m)}} \Tensor \sigma_{X^{f(n,m)},X^m} \Tensor \Id{X^m});
+    (\Id{X^n} \Tensor S_{n,m} \Tensor T_{n,m});(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  To:
+  %
+  %
+  \small{
+  \begin{equation*}
+    (\Id{X^{n'}} \Tensor \COPYSym_{X^{f(n',m')}} \Tensor \COPYSym_{X^{m'}});
+    (\Id{X^{n'} \Tensor X^{f(n',m')}} \Tensor \sigma_{X^{f(n',m')},X^{m'}} \Tensor \Id{X^{m'}});
+    (\Id{X^{n'}} \Tensor S_{n',m'} \Tensor T_{n',m'});(\MATCHSym_{X^{n'}} \Tensor \Id{X^{n'}})
+  \end{equation*}}
+  %
+  According to this definition extensionally equal circuits 
+  are sent to extensionally equal circuits, so 2-cells can be 
+  defined in the obvious way. Commutativity of the square 
+  is again true by definition. A slight modification of the 
+  proof above allows us to also prove the commutativity
+  of the following square:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (Count) at (0,2) {$\Count$};
+      \node (Count') at (0,0) {$\Count$};
+      \node (Bzkp) at (2,2) {$\Bgraph{G}$}; 
+      \node (Bzkp') at (2,0) {$\Bgraph{G'}$}; 
+      \draw[->] (Count) -- (Bzkp);
+      \draw[->] (Count') -- (Bzkp');
+      \draw[->] (Bzkp) -- (Bzkp');
+      \draw[transform canvas={xshift=-1pt}, -] (Count) -- (Count');
+      \draw[transform canvas={xshift=1pt}, -] (Count) -- (Count');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  Now we focus on:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (G') at (-2,0) {$G'$}; 
+      \node (G) at (-2,2) {$G$};
+      \node (FG') at (0,0) {$\Free{G'}$}; 
+      \node (FG) at (0,2) {$\Free{G}$};
+      \node (Bpath') at (2,0) {$\Bpath{G'}$};
+      \node (Bpath) at (2,2) {$\Bpath{G}$};
+      \draw[->] (G) -- node[left] {$g$} (G');
+      \draw[->] (G) -- (FG);
+      \draw[->] (G') -- (FG');
+      \draw[->] (FG) -- node[left] {$\Free{g}$} (FG');
+      \draw[->] (FG) -- (Bpath);
+      \draw[->] (FG') -- (Bpath');
+      \draw[->] (Bpath) -- (Bpath');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  Whose commutativity is obvious by defining the 
+  pseudofunctor $\Bpath{G} \to \Bpath{G'}$ by sending 
+  $X^n$ to $X^{n'}$, and every morpsism
+  %
+  %
+  \begin{equation*}
+    (\Id{X^n} \Tensor e);(\Id{X^n} \Tensor \COPYSym_{X^m});
+    (\Id{X^n} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^n} \Tensor \Id{X^n})
+  \end{equation*}
+  %
+  To:
+  %
+  %
+  \begin{equation*}
+    (\Id{X^{n'}} \Tensor \Free{g}(e));(\Id{X^{n'}} \Tensor \COPYSym_{X^{m'}});
+    (\Id{X^{n'}} \Tensor S_G \Tensor T_G);(\MATCHSym_{X^{n'}} \Tensor \Id{X^{n'}})
+  \end{equation*}
+  %
+  2-cells mapping is again obvious.
+
+  Finally, we focus on the squares:
+  %
+  %
+  \begin{equation*}
+    \begin{tikzpicture}
+      \node (Bpath) at (0,2) {$\Bpath{G}$};
+      \node (Bpath') at (0,0) {$\Bpath{G'}$};
+      \node (Bgraph) at (2,2) {$\Bgraph{G}$}; 
+      \node (Bgraph') at (2,0) {$\Bgraph{G'}$}; 
+      \draw[->] (Bpath) -- (Bgraph);
+      \draw[->] (Bpath') -- (Bgraph');
+      \draw[->] (Bgraph) -- (Bgraph');
+      \draw[->] (Bpath) -- (Bpath');
+    \end{tikzpicture}
+    \qquad
+    \begin{tikzpicture}
+      \node (Bgraph) at (0,2) {$\Bgraph{G}$};
+      \node (Bgraph') at (0,0) {$\Bgraph{G'}$};
+      \node (Bzkp) at (2,2) {$\Bzkp{f(m,n)}$}; 
+      \node (Bzkp') at (2,0) {$\Bzkp{f(m',n')}$}; 
+      \draw[->] (Bgraph) -- (Bzkp);
+      \draw[->] (Bgraph') -- (Bzkp');
+      \draw[->] (Bzkp) -- (Bzkp');
+      \draw[->] (Bgraph) -- (Bgraph');
+    \end{tikzpicture}
+  \end{equation*}
+  %
+  Whose commutativity is proven similarly. 
+  All pseudofunctors involved in these squares 
+  have already been defined previously. Commutativity 
+  is obvious by tracking where generating morphisms get 
+  mapped.
+\end{proof} 
