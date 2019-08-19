@@ -966,7 +966,7 @@ Since we have introduced new inputs, just substituting $S_{m,n}$
 and $T_{m,n}$ in place of $S_G$ and $T_G$ in 
 Theorems~\ref{thm: path functor} and~\ref{thm: graph functor}
 won't work: Indeed, it would force us to specify the encoding
-for $G$ $n$ times in a $n$-fold composition. Moreover, what happens 
+for $G$ $k$ times in a $k$-fold composition. Moreover, what happens 
 if we give different graphs specifications in the composition?
 
 The point is that the categorical structure 
@@ -1107,17 +1107,17 @@ Proceeding as in Lemma~\ref{lem: functor to count},
 we are able to prove the following theorem:
 %
 %
-\begin{theorem}
-  For each $n,m$, denote with $f(n,m)$ the function outputting how many
+\begin{theorem}\label{thm: bzkp functor}
+  For each $n,m$, denote with $f(m,n)$ the function outputting how many
   bits are needed to store the source and target truth tables for graphs 
-  with $n$ vertexes and $m$ edges. There is a functor $\Count \to \Bzkp{f(n,m)}$ sending each 
+  with $n$ vertexes and $m$ edges. There is a functor $\Count \to \Bzkp{f(m,n)}$ sending each 
   number $k$ to the $k$-fold composition of the morphism
   %
   %
   \begin{equation*}
-    (\Id{X^n} \Tensor \COPYSym_{X^{f(n,m)}} \Tensor \COPYSym_{X^m});
-    (\Id{X^n \Tensor X^{f(n,m)}} \Tensor \sigma_{X^{f(n,m)},X^m} \Tensor \Id{X^m});
-    (\Id{X^n} \Tensor S_{n,m} \Tensor T_{n,m});(\MATCHSym_{X^n} \Tensor \Id{X^n})
+    (\Id{X^n} \Tensor \COPYSym_{X^{f(m,n)}} \Tensor \COPYSym_{X^m});
+    (\Id{X^n \Tensor X^{f(m,n)}} \Tensor \sigma_{X^{f(m,n)},X^m} \Tensor \Id{X^m});
+    (\Id{X^n} \Tensor S_{m,n} \Tensor T_{m,n});(\MATCHSym_{X^n} \Tensor \Id{X^n})
   \end{equation*}
   %
   %
@@ -1133,7 +1133,7 @@ we are able to prove the following theorem:
       \node[draw, dashed, minimum height=120, minimum width=110] (contour) at (-0.5,1.25) {};
 
       \node (Xv) at (-3.5,3) {$X^n$};
-      \node (Xf) at (-3.5,1.75) {$X^{f(n,m)}$};
+      \node (Xf) at (-3.5,1.75) {$X^{f(m,n)}$};
       \node (Xe) at (-3.5,0.25) {$X^m$};
 
       \node (X) at (2,2.5) {$X$};
@@ -1170,6 +1170,17 @@ we are able to prove the following theorem:
   %
 \end{theorem}
 %
+Notice that Theorem~\ref{thm: bzkp functor} is stronger than 
+one would expect: As in Theorem~\ref{thm: graph functor} we obtained
+a circuit which not only verified a path of length $n$, but also all 
+paths of smaller length for a given graph $G$, 
+here we have something similar: $f(m,n)$ allows us to
+feed  to the circuit the specification of \emph{any} graph
+that has \emph{up to} $m$ edges and $n$ vertexes! In this sense, 
+fixing $m,n$ amounts to fix some upper bounds for the size 
+of the graphs, exactly as taking the $k$-fold composition of 
+the circuit above amounts to fix some upper bound on the size 
+of the computation we want to verify.
 We conclude by putting everything together, showing how all the 
 constructions we built behave well with respect to each other.
 %
