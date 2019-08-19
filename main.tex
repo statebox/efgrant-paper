@@ -65,9 +65,9 @@ On the other hand, blockchain also spawned a renewed interest for
 cyptography, both for security, privacy, and space reasons: It is 
 paramount for blockchains to be cryptographically secure, if they are 
 meant to work as exchanges of valuables of any sort (such as digital currency).
-As for privacy, criptographic tools such as \emph{zero-knowledge 
+As for privacy, cryptographic tools such as \emph{zero-knowledge 
 succinct non-interactive argument of knowledge (zk-SNARKS)}~[] allow for 
-the verification that an information is correct without actually revealing nothing 
+the verification that an information is correct without actually revealing anything
 about the information itself. This has been used, for instance, by ZCash~[] to 
 implement private blockchain transactions: Here, transacting parties submit 
 zk-SNARKs of their transactions to the blockchain, and miners then verify that a given 
@@ -79,7 +79,7 @@ grow indefinitely space-wise as new blocks keep being added to the chain.
 This is a serious issue, since new nodes are either forced to download many 
 gigabytes of data to sync with the network or they have to require the current state 
 of the chain from another node (which requires trusting the node) and then start 
-syncing from there. This ``trust Vs. feasibility'' issue can be resolved by \emph{recursive 
+syncing from there. This ``trust vs. feasibility'' issue can be resolved by \emph{recursive 
 zk-SNARKS}~[], in which are used to verify, using just a few Kbs, that the current 
 state received by a node is valid. Such applications look very promising especially in 
 contexts such as blockchain applied to the Internet of Things~[].
