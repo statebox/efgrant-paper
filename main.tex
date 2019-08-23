@@ -28,7 +28,6 @@
 \def\titlerunning{Mapping finite state machines to zk-SNARKS}
 \def\authorrunning{F. Genovese, A.Knispel \& J. Fitzgerald}
 
-
 \begin{document}
 \maketitle
 %
@@ -52,37 +51,37 @@ Lately, especially due to the advent of smart contracts
 in business applications, there has been a renewed interest towards 
 classical results in theoretical computer science.
 
-Smart contracts, especially if hosted on the blockchain~[], are immutable
+Smart contracts, especially if hosted on the blockchain~\cite{Nakamoto2008, Buterin2014}, are immutable
 pieces of code, more often than not used to manage money. These are 
 very good reasons to look into ways of writing smart contracts  
 that are reliable, easy to analyze and correct-by-construction. These requirements
- renewed interest in formal models of computation~[]: In particular, 
- \emph{finite state machines (FSMs)}~[] are considered easy 
+ renewed interest in formal models of computation~\cite{Rosu2018}: In particular, 
+ \emph{finite state machines (FSMs)}~\cite{Mavridou2017} are considered easy 
  to implement, well structured, and make possible to prove 
- roperties of the computations being performed. 
+ properties of the computations being performed. 
 
 On the other hand, blockchain also spawned a renewed interest for 
 cyptography, both for security, privacy, and space reasons: It is 
 paramount for blockchains to be cryptographically secure, if they are 
 meant to work as exchanges of valuables of any sort (such as digital currency).
 As for privacy, criptographic tools such as \emph{zero-knowledge 
-succinct non-interactive argument of knowledge (zk-SNARKS)}~[] allow for 
+succinct non-interactive argument of knowledge (zk-SNARKS)}~\cite{Ben-Sasson2013} allow for 
 the verification that an information is correct without actually revealing nothing 
-about the information itself. This has been used, for instance, by ZCash~[] to 
+about the information itself. This has been used, for instance, by ZCash~\cite{Hopwood2019} to 
 implement private blockchain transactions: Here, transacting parties submit 
 zk-SNARKs of their transactions to the blockchain, and miners then verify that a given 
 transaction followed the rules of the protocol by verifying the zk-SNARK, 
 without gaining any information about who-sent-money-to-who, and 
 how much. 
 Regarding space, it has to be noted that by design blockchains tend to 
-grow indefinitely space-wise as new blocks keep being added to the chain. 
+grow indefinitely space-wise as new blocks keep being added to the chain~[]. 
 This is a serious issue, since new nodes are either forced to download many 
 gigabytes of data to sync with the network or they have to require the current state 
 of the chain from another node (which requires trusting the node) and then start 
 syncing from there. This ``trust Vs. feasibility'' issue can be resolved by \emph{recursive 
-zk-SNARKS}~[], in which are used to verify, using just a few Kbs, that the current 
+zk-SNARKS}~\cite{Ben-Sasson2017}, which can be used to verify, using just a few Kilobytes, that the current 
 state received by a node is valid. Such applications look very promising especially in 
-contexts such as blockchain applied to the Internet of Things~[].
+contexts such as blockchain applied to the Internet of Things~\cite{Leiba2018}.
 
 In this work, we put together formal models of computation and 
 cryptography, providing a categorical way to turn finite state machines into zk-SNARKs 
@@ -169,10 +168,10 @@ we conclude by defining directions of future work.
   unit.
   %
   For more information about how to generate a free symmetric strict monoidal 
-  category from a set of object and morphism generators, see~[].
+  category from a set of object and morphism generators, see~\cite{Genovese2019}.
 \end{definition}
 %
-As the name suggests, we interpret \NANDSym as the \NAND gate, \COPYSym as 
+As the names suggest, we interpret \NANDSym as the \NAND gate, \COPYSym as 
 the gate that copies a bit, and \TRUE and \FALSE as constants. We can reify 
 this interpretation using the following lemma:
 %
@@ -186,12 +185,17 @@ this interpretation using the following lemma:
   $1$ and $0$, respectively.
 \end{lemma}
 %
-Indeed, there are multiple choices for the generators of $\Bcirc$. We decided to 
+There are multiple choices for the generators of $\Bcirc$, all leading to a 
+viable categorical model for generalized boolean circuits, so we could have used
+a different set of generators -- for instance \XOR, or \OR together with \AND. We decided to 
 use \NAND because it is well known that this gate, along with the possibility to 
-copy bits, is enough to generate any $n$-ary logical circuit~[]. In the following, we 
-will often refer to other gates, such as $\ORSym$ (called \emph{\OR}) or 
+copy bits, is enough to generate any $n$-ary logical circuit 
+(we say that \NAND is \emph{functionally complete}~\cite{Henderton2001}). 
+Nevertheless, any functionally complete set of boolean gates would 
+be good for the job. In the remainder of this paper, we 
+will often refer to other gates, such as $\ORSym$ (\emph{\OR}) or 
 $\ANDSym$ (\emph{\AND}): In our setting, these are just syntactic sugar for the 
-opportune wirings of $\NANDSym$ and $\COPYSym$ to simulate them.
+opportune wirings of $\NANDSym$ and $\COPYSym$ that simulates them.
 %
 %
 \begin{definition}\label{def: definition of bkp}
@@ -241,7 +245,7 @@ opportune wirings of $\NANDSym$ and $\COPYSym$ to simulate them.
       \end{equation*}
       %
     \item $\Mor{\Bkp}(A,B)(f,g) = \begin{cases}
-      \{*\} & \text{ iff } \texttt{ext}(f) = \texttt{ext}(g);\\
+      \{*\} & \text{ iff } \texttt{ext}f = \texttt{ext}g;\\
       \,\,\,\, \emptyset & \text{ otherwise}
     \end{cases}$
     %
@@ -288,13 +292,17 @@ opportune wirings of $\NANDSym$ and $\COPYSym$ to simulate them.
       \end{tikzpicture}
     \end{equation*}
     %
+    In words, we compose morphisms by wiring the dotted wires together into 
+    an \AND gate, and by considering the monoidal product of the dashed 
+    wires as the dashed wire of the composition.
+    %
     \item The 2-cell compositions and identities are trivial, and defined 
     in the obvious way.
   \end{itemize}
   %
 \end{definition}
 %
-The reason why we define $\Bkp$ as a bicategory is that our 
+The reason why we define $\Bkp$ as a bicategory is that 
 1-cell composition in $\Bkp$ is not associative. Indeed, $(f;g);h$ and $f;(g;h)$
 are different morphisms, as one can see in the figure below:
 %
@@ -403,7 +411,7 @@ $\texttt{AND}(\texttt{AND}(x,y),z) = \texttt{AND}(x,\texttt{AND}(y,z))$
 for each triplet of bits $x, y, z$. A similar argument can be made for identity 
 laws, noting that $\texttt{AND}(x, 1) = x = \texttt{AND}(1,x)$ for each 
 bit $A$. For these reasons we introduced 
-2-cells when $\texttt{f} = \texttt{g}$, which capture exactly 
+2-cells when $\texttt{ext}f = \texttt{ext}g$, which capture exactly 
 the notion of extensional equality. Such cells are by construction invertible 
 and give a very trivial 2-structure, where every 2-homset is both 
 a preorder and a groupoid, and bicategory axioms hold on the nose.
@@ -415,7 +423,7 @@ work, so we opted for the easiest solution.
 %
 %
 \section{Finite State Machines (FSMs)}\label{sec: finite state machines}
-We see \emph{state machines} as Petri nets~[] where 
+We see \emph{state machines} as Petri nets~\cite[Ch.2]{StateboxTeam2019a} where 
 each transition has only one inbound and one outbound arc, 
 and all markings have exactly one token. In this setting, while 
 the usual underlying structure of a Petri net is an hypegraph,
@@ -431,14 +439,14 @@ confusing state machines with their state spaces.
 %
 We can use a Petri net to generate a free symmetric strict monoidal 
 category, essentially using its underlying hypegraph structure to define 
-object and morphism generators~[]. In the case of FSMs, the restriction 
+object and morphism generators~\cite{Genovese2019}. In the case of FSMs, the restriction 
 of their underlying hyergraphs to be graphs simplifies things:
 %
 %
 \begin{definition}
   To each FSM $M$ we can assign a \emph{category of executions 
   of $M$}, denoted $\Free{M}$, which is just the free category built 
-  on the underlying graph of $M$. More in detail, the objects of $\Free{M}$
+  on the underlying graph of $M$~\cite[pp.49-51]{MacLane1978}. More in detail, the objects of $\Free{M}$
   are the vertexes of the underlying graph of $M$ (its vertexes), while morphisms 
   are generated by freely composing the edges of the graph. 
   Identities are the null paths. $\Free{-}$ is a functor $\Graph \to \Cat$. 
@@ -501,15 +509,16 @@ Here we have that $n+h+1 = 2^{\lceil \log_2 (|V|+1) \rceil}$,
 and $n+m+k = 2^{\lceil \log_2 (|E+V|) \rceil}$. The $v_i$ are 
 the enumerations of the vertexes, the $e_i$ enumerations 
 of the edges, and the $u_i, u'_i$ represent the unassigned 
-edge and vertexe enumerations, respectively. In the source (resp. target) 
+edge and vertex enumerations, respectively. In the source (resp. target) 
 table, we put a $1$ in a position if a given vertex is the source (resp. target)
 of a given morphism. Since the first $n$ enumerations for the 
 vertexes are reserved for identity morphisms, this forces our 
-choices in the first $n$ columns. Similarly, since the $u_i$ and 
+choices in the first $n$ columns, which along with rows $1$ to $n$ 
+define an identity matrix. Similarly, since the $u_i$ and 
 $u'_i$ are undefined, there are $0$s in all the entries indexed by them.
 The question marks represent the fact that there may be a $0$ or a $1$
 in that position, as long as there is just one $1$ in each of those 
-columns (an edge can only have one vertex). 
+columns (an edge can only have one source/target vertex). 
 %
 %
 %
@@ -519,7 +528,7 @@ columns (an edge can only have one vertex).
 Using our tables, we are able to build a couple of generalized 
 boolean functions, where we denoted with $\Bool^V$ and $\Bool^E$
 the sets $\Bool^{ \lceil \log_2 (|V|+1) \rceil}$ and 
-$\Bool^{\lceil \log_2 (|E+V|) \rceil}$ respectively:
+$\Bool^{\lceil \log_2 (|E+V|) \rceil}$, respectively:
 %
 %
 \begin{equation*}
@@ -554,7 +563,7 @@ and $\MATCHSym_{X^V}$ implementing $\Source{G}{\_}$,
 $\Target{G}{\_}$ and $\MATCHSym_{X^V}(\_, \_)$, respectively.
 %
 %
-\begin{theorem}[reference]\label{thm: boolean circuits implement boolean functions}
+\begin{theorem}[{{\cite[pg. 8]{Vollmer1999}}}]\label{thm: boolean circuits implement boolean functions}
   For every generalized boolean function, there is a generalized 
   boolean circuit that evaluates it.
 \end{theorem}
@@ -565,7 +574,6 @@ with its truth table is the following:
 %
 %
 \begin{center}
-\hfill
 \resizebox{6cm}{2.5cm}{
 \begin{circuitikz}[baseline=70pt]
   \draw (-1,2.14)  node[american not port, scale = 0.3] (a1){};
@@ -634,7 +642,7 @@ with its truth table is the following:
   \draw[-*] let \p1=(b6.in 1) in (-1.5,6) to ([yshift=-2pt]-1.5,\y1);
   \draw[-] let \p1=(b6.in 1) in (-1.5,\y1) to (b6.in 1);
 \end{circuitikz}}
-\hfill
+\hspace{2em}
 \tiny{\begin{tabular}{c|c|c}
   $a$ & $b$ & $\MATCHSym_2 (a,b)$ \\
   \hline
@@ -655,7 +663,6 @@ with its truth table is the following:
   $10$      & $11$ & 0 \\
   $11$      & $11$ & 1 \\
 \end{tabular}}
-\hfill
 \end{center}
 %
 %
@@ -839,12 +846,12 @@ of edges) as inputs, and returns $1$ and an enumeration of $v'$
 in output if the path leads from $v$ to $v'$. It returns $0$ and 
 $\Zero$ otherwise. Notice that since we included identities 
 in the truth tables when defining $S_G, T_G$, we are also 
-able to verify \emph{any path of length less than $n$ by 
-padding any path with identities}.
+able to process \emph{any path of length less than $n$ by 
+padding it with identities}.
 %
 %
 %
-\subsection{Snarkizing circuits}
+\subsection{Snarkizing circuits}\label{subsec: snarkizing circuits}
 %
 %
 How do we turn the morphisms in 
@@ -852,7 +859,7 @@ $\Bgraph{G}$ into zk-SNARKS?
 Luckily enough, it turns out we do not have to build 
 zk-SNARKS ourselves.  Indeed, there are already 
 implemented ways to turn boolean circuits into 
-zk-SNARKS~[]. Figuring out a cryptographically secure 
+zk-SNARKS~\cite{Scipr-lab2012}. Figuring out a cryptographically secure 
 way to turn circuits into zk-SNARKS is no simple endeavour, 
 that would probably take years and extensive security 
 auditing. Instead, we deem a wiser course of action 
@@ -861,14 +868,14 @@ $\Bgraph{G}$ into boolean circuits, and feed them
 to an already implemented and audited solution.
 %
 %
-\begin{definition}
+\begin{definition}\label{def: snarkizator}
   For each graph $G$ we define the \emph{snarkizator} as a function 
-  $\Snark{\_} : \Mor{\Bgraph{G}} \to \Mor{\Bcirc}$ that 
-  maps a morphism $f: X^V \to X^V$ to 
+  $\Snark{\_} : \Mor{\Bkp} \to \Mor{\Bcirc}$ that 
+  maps a morphism $f: A \to B$ to 
   %
   %
   \begin{equation*}
-      (f \Tensor \Id{X^V});(\Id{X} \Tensor \MATCHSym_{X^V}); \ANDSym
+      (f \Tensor \Id{B});(\Id{X} \Tensor \MATCHSym_{B}); \ANDSym
   \end{equation*}
   %
   %
@@ -881,12 +888,12 @@ to an already implemented and audited solution.
       \ctikzset{tripoles/american and port/width=1};
       \node[american and port] (and) at (3,0.75) {};
 
-      \node (Xv) at (-2,1.25) {$X^V$};
-      \node (Xe) at (-2,0.75) {${X^E}^n$};
-      \node (Xv2) at (-2,-0.25) {$X^V$};
+      \node (Xv) at (-2,1.25) {$A$};
+      \node (Xe) at (-2,0.75) {$X^n$};
+      \node (Xv2) at (-2,-0.25) {$B$};
 
       \node (X1) at (1.5,1.5) {$X$};
-      \node (X2) at (1,0.75) {$X^V$};
+      \node (X2) at (1,0.75) {$B$};
       \node (X2) at (1.5,0.5) {$X$};
 
       \node (X3) at (4,0.75) {$X$};
@@ -913,15 +920,17 @@ $\Snark{\_}$ cannot be improved to a
 (pseudo)functor, since boolean circuits themselves 
 do not form a category.
 
-For each morphism $f$, $\Snark{f}$ is a boolean circuit which takes 
+Since $\Bgraph{G}$ is a subcategory of $\Bkp$, for each
+morphism $f$ in $\Bgraph{G}$ we can consider $\Snark{f}$.
+It is a boolean circuit which takes 
 two values $a,b$ of type $X^V$ as input, representing vertexes, 
 along with $f_1, \dots, f_n$ inputs of type $X^E$, representing 
 edges, and returns $1$ if and only if the edge inputs define a valid path 
 from $a$ to $b$ according to the graph specification defined by $S_G$ and $T_G$.
 The corresponding zk-SNARK, obtained by simply feeding our circuit to 
-any already available library such as \texttt{libsnark}~[], is a succint,
+any already available library such as \texttt{libsnark}~\cite{Scipr-lab2012}, is a succint,
 non-interactive zero knowledge proof that any specified 
-path in the graph is valid or not.
+path in the graph -- up to length $n$ -- is valid or not.
 %
 %
 %
@@ -969,6 +978,8 @@ won't work: Indeed, it would force us to specify the encoding
 for $G$ $k$ times in a $k$-fold composition. Moreover, what happens 
 if we give different graphs specifications in the composition?
 
+As we see, building on top of Definition~\ref{def: definition of bkp}
+in this new setting creates possibly pathological outcomes. 
 The point is that the categorical structure 
 of $\Bkp$ is not good to manage inputs that have to be 
 routinely repeated. We fix these problems straight away 
@@ -977,7 +988,7 @@ by defining a new category as follows:
 %
 \begin{definition}\label{def: definition of bzkp}
   Fix a natural number $k$. We denote with $\Bzkp{k}$ 
-  the \emph{bicategory of zero knowledge proof circuits of size $k$} defined 
+  the \emph{bicategory of zero knowledge proof circuits of size $k$}, defined 
   as follows:
   %
   %
@@ -1032,7 +1043,7 @@ by defining a new category as follows:
     \end{equation*}
     %
     \item $\Mor{\Bzkp{1}}(A,B)(f,g) = \begin{cases}
-      \{*\} & \text{ iff } \texttt{ext}(f) = \texttt{ext}(g);\\
+      \{*\} & \text{ iff } \texttt{ext}f = \texttt{ext}g;\\
       \,\,\,\, \emptyset & \text{ otherwise}
     \end{cases}$
     %
@@ -1096,6 +1107,11 @@ by defining a new category as follows:
         \draw[thick] (0.24,0) -- (C);
       \end{tikzpicture}
     \end{equation*}
+    %
+    In words, we compose morphisms by wiring the dotted wires together into 
+    an \AND gate, by considering the monoidal product of the dashed 
+    wires as the dashed wire of the composition, and by feeding a copy the densely 
+    dotted input to both circuits.
     %
     \item The 2-cell compositions and identities are trivial, and defined 
     in the obvious way.
@@ -1172,22 +1188,34 @@ we are able to prove the following theorem:
 %
 Notice that Theorem~\ref{thm: bzkp functor} is stronger than 
 one would expect: As in Theorem~\ref{thm: graph functor} we obtained
-a circuit which not only verified a path of length $n$, but also all 
+a circuit which not only operated on paths of length $n$, but also on all 
 paths of smaller length for a given graph $G$, 
 here we have something similar: $f(m,n)$ allows us to
 feed  to the circuit the specification of \emph{any} graph
 that has \emph{up to} $m$ edges and $n$ vertexes! In this sense, 
 fixing $m,n$ amounts to fix some upper bounds for the size 
-of the graphs, exactly as taking the $k$-fold composition of 
+of the graph, exactly as taking the $k$-fold composition of 
 the circuit above amounts to fix some upper bound on the size 
-of the computation we want to verify.
+of the path we want to process.
+
+Proceeding as in Section~\ref{subsec: snarkizing circuits}, we can 
+define a snarkizator for the category $\Bzkp{f(m,n)}$ by trivially 
+adapting Definition~\ref{def: snarkizator}. \emph{A snarkized $k$-fold 
+composition of the circuit above verifies if a sequence of $k$ or less 
+edges in any graph having at most $m$ edges and $n$ vertexes constitutes 
+a valid path in the graph or not.} This is exactly what we wanted: 
+A zk-SNARK built on such circuit can be used to succintly proved that 
+a given piece of data constitutes a valid path in the state graph of a 
+specified finite state machine. In other words, \emph{such zk-SNARK
+verifies that the rules specified by a given FSM have been followed}.
+
 We conclude by putting everything together, showing how all the 
-constructions we built behave well with respect to each other.
+constructions we built behave compositionally with respect to each other.
 %
 %
 \begin{theorem}\label{thm: the cube}
 Let $G$, $G'$ be graphs with $n, n'$ vertices and $m, m'$ 
-edges, respectively. Denote with $f(n,m)$ the function 
+edges, respectively. Denote with $f(m,n)$ the function 
 outputting how many bits are needed to store the source 
 and target truth tables for graphs with $n$ vertexes and $m$ edges. 
 Then for each morphism $G \to G'$ the following diagram commutes:
@@ -1276,17 +1304,38 @@ boolean circuits that can verify the correctness of any path in the graph.
 Then, we generalized this to circuits that can verify correctness of 
 paths for any graph with a bounded number of vertexes and edges, 
 obtaining a pseudofunctorial correspondence between 
-the category $\Graph$ and the category of circuits [].
+the category $\Graph$ and the category of circuits.
 
 Since graphs can be used to represent finite state machines and 
-boolean circuits can be compiled into zk-SNARKS, this in turn 
-provides a pseudofunctorial way to turn FSMs into zk-SNARKS.
+boolean circuits can be compiled into zk-SNARKs, this in turn 
+provides a pseudofunctorial way to turn FSMs into zk-SNARKs, 
+with each zk-SNARK verifying that the rules specified by a FSM 
+have been followed.
 
 Ongoing work includes implementing our correspondence in a 
-formally verified setting using dependent types. Future work is 
+formally verified setting using dependent types. To do this, we are 
+using \texttt{idris-ct}~\cite{StateboxTeam2019}, our own library 
+to do category theory in a dependently typed framework 
+(\texttt{Idris}~\cite{Brady2013}).
+
+Future work is 
 mainly focused in generalizing our machinery to map free symmetric
 strict monoidal categories into boolean circuits, providing a way to 
-define arbitrary executions for Petri nets.
+define circuits verifying executions for Petri nets. Major challenges 
+for this task revolve around the fact that the number of tokens in a Petri 
+net marking can be \emph{unbounded}. This proves necessary to rethink 
+the way we store object-related information in a boolean circuit.
+
+Another interesting line of research revolves around using \emph{recursive 
+zk-SNARKs}~\cite{Ben-Sasson2017} to extend the verifying capacities 
+of zk-SNARKs beyond a previously fixed upper bound for the edges 
+that can compose a graph path. The main idea is that to verify, say, that 
+$2n$ edges form a valid path in a graph $G$, we can use a zk-SNARK verifying 
+that the first $n$ edges form a path in $G$, and recursively feed it to 
+a zk-SNARK verifying that the last $n$ edges form a path in $G$. This recursive 
+SNARK then verifies that the overall sequence of $2n$ edges is a valid path in $G$. 
+The possibility of recursively composing zk-SNARKs seems very promising to 
+generalize our strategy to the verification of paths of arbitrary length.
 %
 %
 %
@@ -1296,12 +1345,11 @@ that financed this work with a grant.
 
 %QPL Wants Bibtex!
 %
-%\printbibliography 
 %\newpage
 %
-
+\newpage
 \bibliographystyle{eptcs}
-\bibliography{bibtexbibliography}
+\bibliography{Bibliography}
 
 \clearpage
 \appendix
