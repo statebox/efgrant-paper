@@ -86,7 +86,7 @@
     \fi\fi\fi
     \providecommand{\titlerunning}{Please define {\tt $\backslash$titlerunning}}
     \providecommand{\authorrunning}{Please define {\tt $\backslash$authorrunning}}
-    \providecommand{\copyrightholders}{\authorrunning}
+    \providecommand{\copyrightholders}{Statebox Foundation}
     \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
     \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
     \long\def\@makefntext##1{\parindent 1em\noindent
