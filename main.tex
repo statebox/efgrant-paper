@@ -18,14 +18,14 @@
 
 \setcounter{tocdepth}{2}
 
-\title{Mapping finite state machines to zk-SNARKS \\ Using Category Theory}
+\title{Mapping Finite State Machines to zk-SNARKs \\ Using Category Theory}
 \author{
 	F. Genovese, A.Knispel, J. Fitzgerald \\
 	Statebox Team\\
 	\texttt{research@statebox.io}
 }
 
-\def\titlerunning{Mapping finite state machines to zk-SNARKS}
+\def\titlerunning{Mapping finite state machines to zk-SNARKs}
 \def\authorrunning{F. Genovese, A.Knispel \& J. Fitzgerald}
 
 \begin{document}
@@ -35,7 +35,7 @@
 \begin{abstract}
   We provide a categorical procedure to turn graphs corresponding to 
   state spaces of finite state machines into boolean circuits, leveraging on the fact that 
-  boolean circuits can be easily turned into zk-SNARKS. Our 
+  boolean circuits can be easily turned into zk-SNARKs. Our 
   circuits verify that a given sequence of edges and nodes is indeed a 
   path in the graph they represent. We then generalize to circuits verifying 
   paths in arbitrary graphs. We prove that all of our correspondences are 
@@ -65,7 +65,7 @@ cyptography, both for security, privacy, and space reasons: It is
 paramount for blockchains to be cryptographically secure, if they are 
 meant to work as exchanges of valuables of any sort (such as digital currency).
 As for privacy, criptographic tools such as \emph{zero-knowledge 
-succinct non-interactive argument of knowledge (zk-SNARKS)}~\cite{Ben-Sasson2013} allow for 
+succinct non-interactive argument of knowledge (zk-SNARKs)}~\cite{Ben-Sasson2013} allow for 
 the verification that an information is correct without actually revealing nothing 
 about the information itself. This has been used, for instance, by ZCash~\cite{Hopwood2019} to 
 implement private blockchain transactions: Here, transacting parties submit 
@@ -79,7 +79,7 @@ This is a serious issue, since new nodes are either forced to download many
 gigabytes of data to sync with the network or they have to require the current state 
 of the chain from another node (which requires trusting the node) and then start 
 syncing from there. This ``trust Vs. feasibility'' issue can be resolved by \emph{recursive 
-zk-SNARKS}~\cite{Ben-Sasson2017}, which can be used to verify, using just a few Kilobytes, that the current 
+zk-SNARKs}~\cite{Ben-Sasson2017}, which can be used to verify, using just a few Kilobytes, that the current 
 state received by a node is valid. Such applications look very promising especially in 
 contexts such as blockchain applied to the Internet of Things~\cite{Leiba2018}.
 
@@ -88,7 +88,7 @@ cryptography, providing a categorical way to turn finite state machines into zk-
 that verify how a sequence of inputs leading to a state change follows the 
 rules specified by the finite state machine itself. To do this, we bypass the problem 
 of modelling cryptographical primitives categorically, using the 
-fact that boolean circuits can be easily turned into zk-SNARKS by already 
+fact that boolean circuits can be easily turned into zk-SNARKs by already 
 available techniques. 
 
 We proceed as follows: In Section~\ref{sec: the categories bfun, bcirc, bkp} we 
@@ -853,12 +853,12 @@ padding it with identities}.
 %
 %
 How do we turn the morphisms in 
-$\Bgraph{G}$ into zk-SNARKS? 
+$\Bgraph{G}$ into zk-SNARKs? 
 Luckily enough, it turns out we do not have to build 
-zk-SNARKS ourselves.  Indeed, there are already 
+zk-SNARKs ourselves.  Indeed, there are already 
 implemented ways to turn boolean circuits into 
-zk-SNARKS~\cite{Scipr-lab2012}. Figuring out a cryptographically secure 
-way to turn circuits into zk-SNARKS is no simple endeavour, 
+zk-SNARKs~\cite{Scipr-lab2012}. Figuring out a cryptographically secure 
+way to turn circuits into zk-SNARKs is no simple endeavour, 
 that would probably take years and extensive security 
 auditing. Instead, we deem a wiser course of action 
 turning boolean circuits in 
@@ -1347,5 +1347,6 @@ that financed this work with a grant.
 \clearpage
 \appendix
 \input{appendix.tex}
-
+\clearpage
+\input{appendix2.tex}
 \end{document}
