@@ -1,24 +1,24 @@
-\section*{Appendix - Building the morphisms $S_G, T_G, S_{m,n}, T_{m,n}$}
+\section*{Addendum - Building the morphisms $S_G, T_G, S_{m,n}, T_{m,n}$}
 %
 %
 In Section~\ref{sec: turning executions into circuits} we mentioned 
-a couple of boolean functions, $S_G, T_G : \Bool^E \to \Bool^V$: 
-They depend on having fixed a graph $G$, and return 
+a couple of boolean circuits, $S_G, T_G : \Bool^E \to \Bool^V$: 
+They depend on a fixed graph $G$, and return 
 as output the enumeration of a source and target vertex, respectively, 
 of an edge whose enumeration is specified as input.
 
-The beauty of category theory lies precisely in the fact that we were 
-able to abstract on how $S_G$ and $T_G$ are made, and just focusing 
+The beauty of category theory lies precisely in the possibility
+ to abstract from the definition of $S_G$ and $T_G$, just focusing 
 on how these functions had to be used to assemble the whole verifying 
 circuit for $G$. Nevertheless, a precise
-description of these functions is still needed to make an implementation
-possible, which we are going to provide in this appendix. We warn the reader 
+description of these circuits is still needed to make an implementation
+possible, which we are going to provide in this addendum. We warn the reader 
 that our solution is far from being optimal in terms of complexity, so it should be 
 understood as a proof of concept.
 
-In the following, we will explain the process for the function $S_G$, 
-the one for $T_G$ being similar. First, we build $S_G$ as a table using the incidency 
-matrix of the graph $G$.
+In the following, we will explain the process for the circuit $S_G$, 
+the one for $T_G$ being similar. First, we realize $S_G$ as a table using the incidency 
+matrix of the graph $G$:
 %
 %
 \begin{center}\scriptsize
@@ -96,7 +96,7 @@ vertex enumeration:
 \end{center}
 %
 Using standard techniques~\cite{Vollmer1999} we are able to turn each one of 
-these tables into a digital circuit. We then obtain a bunch 
+these tables into a circuit. We then obtain a bunch 
 of morphisms in $\Bcirc$:
 %
 %
@@ -123,7 +123,7 @@ of morphisms in $\Bcirc$:
 \end{equation*}
 % 
 The resulting morphism $S_G$ is obtained by just copying the 
-inputs and tensoring the morphisms together:
+input and tensoring the morphisms together:
 %
 %
 \begin{equation*}
@@ -152,8 +152,8 @@ Here one should note that the $V$-fold monoidal product of $X$ is
 just $X^V$, so the string diagram above is a morphism of the right type, from 
 $X^E$ to $X^V$.
 
-Now we focus on the morphisms $S_{m,n}, T_{m,n}: X^{f(m,n)} \otimes X^m \to X^n $.
-These morphisms accept a graph enumeration of $f(m,n)$ bits in input, along with an edge 
+Now we focus on the circuits $S_{m,n}, T_{m,n}: X^{f(m,n)} \otimes X^m \to X^n $.
+These accept a graph enumeration of $f(m,n)$ bits in input, along with an edge 
 enumeration of $m$ bits, and return a vertex enumeration of $n$ bits, representing the 
 source and target, respectively, of the edge provided in the specified graph.
 
@@ -161,7 +161,7 @@ Again, we focus on $S_{m,n}$, the procedure for $T_{m,n}$ being
 similar. We start by noticing that for a fixed
 bitstring $s$ of length $f(m,n)$, we can produce a circuit 
 $F_s: X^{f(m,n)} \to X$ (called \emph{filter for $s$}) that outputs $1$ only 
-if the input is $s$, and $0$ otherwise: For each bit of 
+if the input is $s$, and $0$ otherwise: For each digit composing 
 $s$, we concatenate it with a $\NOT$ gate if it is $0$, and we leave it as it is 
 otherwise. Then we wire all the bits with $\AND$ ports. For instance, 
 the circuit below, working for inputs of $4$ bits, 
@@ -232,10 +232,10 @@ graph $G$ with $m$ edges and $n$ vertexes, we can consider the circuit:
 \end{equation*}
 %
 That is, we are connecting the output of $F_s$ with each output bit of 
-$S_G$ using $\AND$ ports. The result is a gate 
-$S_{m,n}^G: X^{f(m,n)} \otimes X^m \to X^n$ that acts like $S_G$
-only when the input on $X^{f(n,m)}$ is the enumeration of the graph $G$, 
-and outputs $0$ in any other case.
+$S_G$ using $\AND$ ports. The result is a circuits 
+$S_{m,n}^G: X^{f(m,n)} \otimes X^m \to X^n$ that reduces to $S_G$
+when the input on $X^{f(n,m)}$ is the enumeration of the graph $G$, 
+while it reduces to the constant $0$ circuit in any other case.
 
 The circuit $S_{m,n}$ is obtained by tensoring together all the 
 $S_{m,n}^G$ gates for each graph $G$ of $m$ edges and $v$ vertexes,
@@ -250,8 +250,8 @@ by copying the inputs and taking the $\OR$ of the outputs.
     \node[draw, minimum height=20, minimum width=40, rounded corners=2, thick] (S1) at (0,1)  {$S_{m,n}^{G_1}$};
     \node[draw, circle, radius=5pt, thick] (copyGraph) at (-2,1) {};
     \node[draw, circle, radius=5pt, thick] (copyEdge) at (-2,-1) {};
-    \draw (2.5,-1.15)  node[american and port, scale = 0.5] (o2){};
-    \draw (2.5,1.15)  node[american and port, scale = 0.5] (o1){};
+    \draw (2.5,-1.15)  node[american or port, scale = 0.5] (o2){};
+    \draw (2.5,1.15)  node[american or port, scale = 0.5] (o1){};
 
     \node (Xg) at (-4,1) {$X^{f(m,n)}$};
     \node (Xe) at (-4,-1) {$X^m$};
@@ -284,3 +284,7 @@ by copying the inputs and taking the $\OR$ of the outputs.
   \end{tikzpicture}
 \end{equation*}
 %
+Feeding the enumeration of a graph $G$ to the circuit above has the following effect:
+Exactly one of the tensored circuits will reduce to $S_G$, while
+all the others will reduce to the constant $0$ circuit. Since $0$ is a unit for $\OR$, 
+the resulting circuit reduces to $S_G$.
