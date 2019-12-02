@@ -1,0 +1,124 @@
+\tikzstyle{place}=
+  [circle,thick,draw=blue!75,fill=blue!20,minimum size=6mm]
+
+\tikzstyle{transition}=
+  [rectangle,thick,draw=black!75,fill=black!20,minimum size=4mm]
+
+  \usetikzlibrary{
+	cd,
+	math,
+	decorations.markings,
+	positioning,
+	arrows.meta,
+	shapes,
+	calc,
+	fit,
+	quotes,
+	automata,
+	petri,
+	scopes
+}
+
+\tikzset{
+	pics/netA/.style args={#1/#2/#3/#4/#5/#6}{code={
+
+		
+		% \fill[yellow!15] (-0.8,-2.3) rectangle (2.3, 2.3);
+		
+		% X
+		\node [place,label=above right:$X$,colored tokens={%
+			#1
+		}] (-p_x) {};
+
+		% Tau
+		\node [transition,label=above:$\tau$, label=left:#4] (-t_tau) [above = of -p_x] {};
+		
+		% Y
+		\node [place,label=above:$Y$,colored tokens={%
+			#2
+		}] (-p_y) [right=of -t_tau] {};
+		
+		% Mu
+		\node [transition,label=below:$\mu$, label=right:#5] (-t_mu) [below = of -p_y] {};
+		
+		% Nu
+		\node [transition,label=below:$\nu$, label=left:#6] (-t_nu) [below =of -p_x] {};
+
+		% Z
+		\node [place,label=below:$Z$,colored tokens={%
+			#3
+		}] (-p_z) [right=of -t_nu] {};
+		
+        \draw[->] (-p_x) -- (-t_tau);
+		\draw[->] (-t_tau) -- (-p_y);
+		\draw[->] (-p_y) -- (-t_mu);
+		\draw[->] (-t_mu) -- (-p_x);
+		\draw[->] (-p_x) -- (-t_nu);
+		\draw[->] (-t_nu) -- (-p_z);
+
+	}}
+}
+
+\tikzset{
+	pics/netB/.style args={#1/#2/#3}{code={
+
+		% \fill[yellow!15] (-0.8,-2.3) rectangle (2.3, 2.3);
+
+		% X
+		\node [place,label=above:$X$,colored tokens={%
+			#1
+		}] (-p_x) {};
+
+		% Tau
+		\node [transition,label=above:$\tau$, label=below:#3] (-t_tau) [right = of -p_x] {};
+		
+		% Y
+		\node [place,label=above:$Y$,colored tokens={%
+			#2
+		}] (-p_y) [right=of -t_tau] {};
+		
+		
+        \draw[->] (-p_x) -- (-t_tau);
+		\draw[->] (-t_tau) -- (-p_y);
+	}}
+}
+
+\tikzset{
+	pics/netC/.style args={#1/#2/#3/#4/#5/#6}{code={
+			
+			
+			% \fill[yellow!15] (-0.8,-2.3) rectangle (2.3, 2.3);
+			
+			% X
+			\node [place,label=above right:$X$,colored tokens={%
+				#1
+			}] (-p_x) {};
+			
+			% Tau
+			\node [transition,label=above:$\tau$, label=left:#4] (-t_tau) [above = of -p_x] {};
+			
+			% Y
+			\node [place,label=above:$Y$,colored tokens={%
+				#2
+			}] (-p_y) [right=of -t_tau] {};
+			
+			% Mu
+			\node [transition,label=below:$\mu$, label=right:#5] (-t_mu) [below = of -p_y] {};
+			
+			% Nu
+			\node [transition,label=below:$\nu$, label=left:#6] (-t_nu) [below =of -p_x] {};
+			
+			% Z
+			\node [place,label=below:$Z$,colored tokens={%
+				#3
+			}] (-p_z) [right=of -t_nu] {};
+			
+			\draw[->] (-p_x) -- (-t_tau);
+			\draw[->] (-t_tau) -- node[above left = -0.2 and 0.4 of -p_y]{$2$} (-p_y);
+			\draw[->] (-p_y) -- (-t_mu);
+			\draw[->] (-t_mu) -- (-p_x);
+			\draw[->] (-p_x) -- (-t_nu);
+			\draw[->] (-t_nu) -- (-p_z);
+			
+	}}
+}

@@ -1,0 +1,30 @@
+\frametitle{Example}
+Dependent types allow us to implement definitions in a verified way.\pause
+
+  \bigskip
+
+  \lstset{language=idris, style=numbers, escapeinside=||}
+  \begin{lstlisting}
+  record Category where
+    constructor MkCategory |\pause|
+    obj           : Type |\pause|
+    mor           : obj -> obj -> Type |\pause|
+    identity      : (a : obj) -> mor a a |\pause|
+    compose       : (a, b, c : obj)
+                 -> (f : mor a b)
+                 -> (g : mor b c)
+                 -> mor a c |\pause|
+    leftIdentity  : (a, b : obj)
+                 -> (f : mor a b)
+                 -> compose a a b (identity a) f = f |\pause|
+    rightIdentity : (a, b : obj)
+                 -> (f : mor a b)
+                 -> compose a b b f (identity b) = f |\pause|
+    associativity : (a, b, c, d : obj)
+                 -> (f : mor a b)
+                 -> (g : mor b c)
+                 -> (h : mor c d)
+                 -> compose a b d f (compose b c d g h)
+                   = compose a c d (compose a b c f g) h
+  \end{lstlisting}
+
